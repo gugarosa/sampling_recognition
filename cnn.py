@@ -7,32 +7,32 @@ from sklearn import model_selection
 
 from utils.datasets import Dataset
 
-N_PERSONS = 26
-ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+N_PERSONS = 66
+ID_TESTS = [9, 10, 11, 12]
 
 # Loads the HandPD dataset
-d = Dataset(name='signrec', n_persons=N_PERSONS, id_tests=ID_TESTS, n_samples=1024, n_channels=6)
+d = Dataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS, n_samples=256, n_channels=6)
 
 # Re-shaping data
-d.x = np.reshape(d.x, (N_PERSONS*len(ID_TESTS), 32, 32, 6))
+d.x = np.reshape(d.x, (N_PERSONS*len(ID_TESTS), 16, 16, 6))
 
 # Re-define labels for Parkinson's identification
-# d.y[:len(ID_TESTS)*35] = 0
-# d.y[len(ID_TESTS)*35:] = 1
+d.y[:len(ID_TESTS)*35] = 0
+d.y[len(ID_TESTS)*35:] = 1
 
 #
-X_train, X_test, Y_train, Y_test = model_selection.train_test_split(d.x, d.y, test_size=0.1, random_state=42, stratify=d.y)
+X_train, X_test, Y_train, Y_test = model_selection.train_test_split(d.x, d.y, test_size=0.5, random_state=5, stratify=d.y)
 
 history = History()
 
-img_x = 32
-img_y = 32
+img_x = 16
+img_y = 16
 img_z = 6
 input_shape = (img_x, img_y, img_z)
 
-batch_size = 8
-num_classes = N_PERSONS
-epochs = 400
+batch_size = 16
+num_classes = 2
+epochs = 300
  
 X_train = X_train.astype('float32')
 X_test = X_test.astype('float32')

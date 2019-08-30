@@ -6,13 +6,26 @@ DATASETS = ['signrec', 'handpd']
 
 
 class Dataset():
-    """
+    """A Dataset class to initialize the desired signal's datasets.
+
+    Properties:
+        x (np.array): Dataset's data.
+        y (np.array): Dataset's labels.
+
     """
 
     def __init__(self, name='', n_persons=1, n_tests=1, n_samples=128, n_channels=6):
+        """Initalization method.
+
+        Args:
+            name (str): The dataset's name.
+            n_persons (int): Number of dataset's persons.
+            n_tests (int): Amount of tests per person.
+            n_samples (int): Number of samples per signal.
+            n_channels (int): Number of channels per signal.
+
         """
-        """
-        
+
         # Checks if name belongs to a known dataset
         if name not in DATASETS:
             # If not, raises an error
@@ -21,16 +34,30 @@ class Dataset():
         # If it is supposed to load the signec dataset
         if name == 'signrec':
             # Loads using the space delimiter
-            self.x, self.y = _load_dataset('signrec', n_persons, n_tests, n_samples, n_channels, delimiter=' ')
+            self.x, self.y = _load_dataset(
+                'signrec', n_persons, n_tests, n_samples, n_channels, delimiter=' ')
 
         # If it is supposed to load the handpd dataset
         elif name == 'handpd':
             # Loads using the tab delimiter
-            self.x, self.y = _load_dataset('handpd', n_persons, n_tests, n_samples, n_channels, delimiter='\t')
+            self.x, self.y = _load_dataset(
+                'handpd', n_persons, n_tests, n_samples, n_channels, delimiter='\t')
 
 
 def _load_dataset(name, n_persons, n_tests, n_samples, n_channels, delimiter):
-    """
+    """Loads a specific dataset.
+
+    Args:
+        name (str): The dataset's name.
+        n_persons (int): Number of dataset's persons.
+        n_tests (int): Amount of tests per person.
+        n_samples (int): Number of samples per signal.
+        n_channels (int): Number of channels per signal.
+        delimiter (str): A delimiter character, e.g., ' ' or '\t'.
+
+    Returns:
+        The dataset's data and labels.
+
     """
 
     print(f'Loading dataset: {name} ...\n')

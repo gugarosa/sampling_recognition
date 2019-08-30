@@ -2,6 +2,18 @@ import numpy as np
 
 
 def sample_signal(signal, n_samples, n_channels):
+    """Samples a signal to a desired number of samples.
+
+    Args:
+        signal (np.array): Pre-loaded signal.
+        n_samples (int): Number of samples.
+        n_channels (int): Number of signal's channels.
+
+    Returns:
+        A numpy array holding the sampled signal.
+        
+    """
+
     print(f'Sampling signal with {n_samples} samples ...')
 
     # Gathering the signal shape

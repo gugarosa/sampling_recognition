@@ -14,13 +14,13 @@ class Dataset():
 
     """
 
-    def __init__(self, name='', n_persons=1, n_tests=1, n_samples=128, n_channels=6):
+    def __init__(self, name='', n_persons=1, id_tests=[1], n_samples=128, n_channels=6):
         """Initalization method.
 
         Args:
             name (str): The dataset's name.
             n_persons (int): Number of dataset's persons.
-            n_tests (int): Amount of tests per person.
+            id_tests (list): List of the tests identifiers.
             n_samples (int): Number of samples per signal.
             n_channels (int): Number of channels per signal.
 
@@ -35,22 +35,22 @@ class Dataset():
         if name == 'signrec':
             # Loads using the space delimiter
             self.x, self.y = _load_dataset(
-                'signrec', n_persons, n_tests, n_samples, n_channels, delimiter=' ')
+                'signrec', n_persons, id_tests, n_samples, n_channels, delimiter=' ')
 
         # If it is supposed to load the handpd dataset
         elif name == 'handpd':
             # Loads using the tab delimiter
             self.x, self.y = _load_dataset(
-                'handpd', n_persons, n_tests, n_samples, n_channels, delimiter='\t')
+                'handpd', n_persons, id_tests, n_samples, n_channels, delimiter='\t')
 
 
-def _load_dataset(name, n_persons, n_tests, n_samples, n_channels, delimiter):
+def _load_dataset(name, n_persons, id_tests, n_samples, n_channels, delimiter):
     """Loads a specific dataset.
 
     Args:
         name (str): The dataset's name.
         n_persons (int): Number of dataset's persons.
-        n_tests (int): Amount of tests per person.
+        id_tests (list): List of the tests identifiers.
         n_samples (int): Number of samples per signal.
         n_channels (int): Number of channels per signal.
         delimiter (str): A delimiter character, e.g., ' ' or '\t'.
@@ -63,7 +63,7 @@ def _load_dataset(name, n_persons, n_tests, n_samples, n_channels, delimiter):
     print(f'Loading dataset: {name} ...\n')
 
     # Creating an empty array to hold the data
-    x = np.zeros((n_persons*n_tests, n_samples, n_channels))
+    x = np.zeros((n_persons*len(id_tests), n_samples, n_channels))
 
     # Creating an empty list to hold the labels
     y = []
@@ -71,15 +71,15 @@ def _load_dataset(name, n_persons, n_tests, n_samples, n_channels, delimiter):
     # For every person
     for i in range(n_persons):
         # For every test
-        for j in range(n_tests):
+        for j, test in enumerate(id_tests):
             # Loads the signal
-            signal = l.load_signal(f'data/{name}/{i+1}/{j+1}.txt', delimiter)
+            signal = l.load_signal(f'data/{name}/{i+1}/{test}.txt', delimiter)
 
             # Samples the signal
             sampled_signal = s.sample_signal(signal, n_samples, n_channels)
 
             # Saves to array
-            x[i*n_tests+j, :, :] = sampled_signal
+            x[i*len(id_tests)+j, :, :] = sampled_signal
 
             # Also, creates the label
             y.append(i)

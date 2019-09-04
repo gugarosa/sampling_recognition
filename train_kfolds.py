@@ -58,7 +58,8 @@ for train, test in k_fold.split(d.x, d.y):
     model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
 
     # Fits the model
-    history.append(model.fit(X_train, Y_train, batch_size=16, epochs=300, verbose=1))
+    history.append(model.fit(X_train, Y_train,
+                             batch_size=16, epochs=300, verbose=1))
 
     # Evaluates the model
     score = model.evaluate(X_test, Y_test)

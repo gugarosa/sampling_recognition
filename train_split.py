@@ -37,7 +37,8 @@ d.y[len(ID_TESTS)*35:] = 1
 input_shape = (d.x.shape[1], d.x.shape[2], d.x.shape[3])
 
 # Splitting the data
-X_train, X_test, Y_train, Y_test = model_selection.train_test_split(d.x, d.y, test_size=0.1, random_state=5, stratify=d.y)
+X_train, X_test, Y_train, Y_test = model_selection.train_test_split(
+    d.x, d.y, test_size=0.1, random_state=5, stratify=d.y)
 
 # Pre-processing the training data
 X_train = X_train.astype('float32')

@@ -5,18 +5,22 @@ from keras.models import Sequential
 
 
 class Lenet(Sequential):
-    """
+    """A simple architecture copying the default's LeNet.
+
     """
 
     def __init__(self, input_shape=(), n_classes=2, lr=0.0001):
-        """
+        """Initialization methods.
+
+        Args:
+            input_shape (tuple): The input shape of the network.
+            n_classes (int): Number of classes.
+            lr (float): Learning rate.
+
         """
 
         # Overriding its parent class
         super(Lenet, self).__init__()
-
-        # Creating a history property
-        self.history = History()
 
         # Defining the model itself
         # Conv + Max Pool block

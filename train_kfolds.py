@@ -69,8 +69,8 @@ for train, test in k_fold.split(d.x, d.y):
     accuracy.append(score[1])
 
 # Plotting last iteration results
-# p.plot_accuracy(history[-1])
-# p.plot_loss(history[-1])
+# p.plot_accuracy(history[-1], validation=False)
+# p.plot_loss(history[-1], validation=False)
 
 # Printing output
 print(f'Loss: {np.mean(loss)} +- {np.std(loss)} | Accuracy: {np.mean(accuracy)} +- {np.std(accuracy)}')

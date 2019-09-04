@@ -52,14 +52,15 @@ Y_test = keras.utils.to_categorical(Y_test, N_CLASSES)
 model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
 
 # Fits the model
-history = model.fit(X_train, Y_train, batch_size=16, epochs=300, verbose=1)
+# history = model.fit(X_train, Y_train, batch_size=16, epochs=300, verbose=1)
+history = model.fit(X_train, Y_train, validation_split=0.33, batch_size=16, epochs=300, verbose=1)
 
 # Evaluates the model
 score = model.evaluate(X_test, Y_test)
 
 # Plotting results
-p.plot_accuracy(history)
-p.plot_loss(history)
+p.plot_accuracy(history, validation=True)
+p.plot_loss(history, validation=True)
 
 # Printing output
 print(f'Loss: {score[0]} | Accuracy: {score[1]}')

@@ -4,7 +4,7 @@ from sklearn import model_selection
 
 from models.lenet import Lenet
 from utils import plotter as p
-from utils.dataset import Dataset
+from datasets.sampled import SampledDataset
 
 # Number of persons to load the data
 N_PERSONS = 66
@@ -22,7 +22,7 @@ N_CHANNELS = 6
 N_CLASSES = 2
 
 # Loads the HandPD dataset
-d = Dataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
+d = SampledDataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
             n_samples=N_SAMPLES, n_channels=N_CHANNELS)
 
 # Re-shapes data

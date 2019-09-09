@@ -4,25 +4,25 @@ from sklearn.model_selection import StratifiedKFold
 
 from models.lenet import Lenet
 from utils import plotter as p
-from utils.dataset import Dataset
+from datasets.sampled import SampledDataset
 
 # Number of persons to load the data
-N_PERSONS = 66
+N_PERSONS = 26
 
 # Identifier of tests to be loaded
-ID_TESTS = [9, 10, 11, 12]
+ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 # Number of samples for further signal sampling
-N_SAMPLES = 256
+N_SAMPLES = 1024
 
 # Number of signals' channels
 N_CHANNELS = 6
 
 # Number of classes
-N_CLASSES = 2
+N_CLASSES = 26
 
 # Loads the HandPD dataset
-d = Dataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
+d = SampledDataset(name='signrec', n_persons=N_PERSONS, id_tests=ID_TESTS,
             n_samples=N_SAMPLES, n_channels=N_CHANNELS)
 
 # Re-shapes data
@@ -30,8 +30,8 @@ d.x = np.reshape(d.x, (N_PERSONS*len(ID_TESTS),
                        int(np.sqrt(N_SAMPLES)), int(np.sqrt(N_SAMPLES)), N_CHANNELS))
 
 # Re-define labels for Parkinson's identification
-d.y[:len(ID_TESTS)*35] = 0
-d.y[len(ID_TESTS)*35:] = 1
+# d.y[:len(ID_TESTS)*35] = 0
+# d.y[len(ID_TESTS)*35:] = 1
 
 # Creates the input shape
 input_shape = (d.x.shape[1], d.x.shape[2], d.x.shape[3])

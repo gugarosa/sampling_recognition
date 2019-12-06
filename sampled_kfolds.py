@@ -17,7 +17,7 @@ N_PERSONS = 66
 ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 # Number of samples for further signal sampling
-N_SAMPLES = 256
+N_SAMPLES = 64
 
 # Number of signals' channels
 N_CHANNELS = 6

@@ -2,9 +2,8 @@ import keras
 import numpy as np
 from sklearn import model_selection
 
-from datasets.transformed import TransformedDataset
 from models.lenet import Lenet
-from utils import plotter as p
+from datasets.sampled import SampledDataset
 
 # Number of persons to load the data
 N_PERSONS = 66
@@ -12,8 +11,8 @@ N_PERSONS = 66
 # Identifier of tests to be loaded
 ID_TESTS = [9, 10, 11, 12]
 
-# Size of the transform
-N_TRANSFORM = 128
+# Number of samples for further signal sampling
+N_SAMPLES = 256
 
 # Number of signals' channels
 N_CHANNELS = 6
@@ -22,8 +21,12 @@ N_CHANNELS = 6
 N_CLASSES = 2
 
 # Loads the HandPD dataset
-d = TransformedDataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
-                       transform_size=N_TRANSFORM, n_channels=N_CHANNELS)
+d = SampledDataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
+            n_samples=N_SAMPLES, n_channels=N_CHANNELS)
+
+# Re-shapes data
+d.x = np.reshape(d.x, (N_PERSONS*len(ID_TESTS),
+                       int(np.sqrt(N_SAMPLES)), int(np.sqrt(N_SAMPLES)), N_CHANNELS))
 
 # Re-define labels for Parkinson's identification
 d.y[:len(ID_TESTS)*35] = 0
@@ -49,15 +52,10 @@ model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
 
 # Fits the model
 # history = model.fit(X_train, Y_train, batch_size=16, epochs=300, verbose=1)
-history = model.fit(X_train, Y_train, validation_split=0.33,
-                    batch_size=16, epochs=300, verbose=1)
+history = model.fit(X_train, Y_train, validation_split=0.33, batch_size=16, epochs=300, verbose=1)
 
 # Evaluates the model
 score = model.evaluate(X_test, Y_test)
-
-# Plotting results
-p.plot_accuracy(history, validation=True)
-p.plot_loss(history, validation=True)
 
 # Printing output
 print(f'Loss: {score[0]} | Accuracy: {score[1]}')

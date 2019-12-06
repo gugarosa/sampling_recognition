@@ -1,48 +1,53 @@
+import pickle
+
 import keras
 import numpy as np
+from sklearn.metrics import (accuracy_score, f1_score, precision_score,
+                             recall_score)
 from sklearn.model_selection import StratifiedKFold
 
-from models.lenet import Lenet
-from utils import plotter as p
 from datasets.sampled import SampledDataset
+from models.lenet import Lenet
 
 # Number of persons to load the data
-N_PERSONS = 26
+N_PERSONS = 2
 
 # Identifier of tests to be loaded
-ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 # Number of samples for further signal sampling
-N_SAMPLES = 1024
+N_SAMPLES = 256
 
 # Number of signals' channels
 N_CHANNELS = 6
 
 # Number of classes
-N_CLASSES = 26
+N_CLASSES = 2
+
+# Defining the output file
+OUTPUT_FILE = 'lenet_' + str(N_SAMPLES) + '.pkl'
 
 # Loads the HandPD dataset
-d = SampledDataset(name='signrec', n_persons=N_PERSONS, id_tests=ID_TESTS,
+d = SampledDataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
             n_samples=N_SAMPLES, n_channels=N_CHANNELS)
 
 # Re-shapes data
 d.x = np.reshape(d.x, (N_PERSONS*len(ID_TESTS),
                        int(np.sqrt(N_SAMPLES)), int(np.sqrt(N_SAMPLES)), N_CHANNELS))
 
-# Re-define labels for Parkinson's identification
-# d.y[:len(ID_TESTS)*35] = 0
-# d.y[len(ID_TESTS)*35:] = 1
-
 # Creates the input shape
 input_shape = (d.x.shape[1], d.x.shape[2], d.x.shape[3])
 
 # Creating a K-Folds cross-validation
-k_fold = StratifiedKFold(n_splits=10, shuffle=True, random_state=5)
+k_fold = StratifiedKFold(n_splits=2, shuffle=True, random_state=1)
 
-# Creating a history and a score list
-history = []
-loss = []
-accuracy = []
+# Creating train_loss, test_loss and test_accuracy lists
+train_loss = []
+test_loss = []
+test_accuracy = []
+test_precision = []
+test_recall = []
+test_f1 = []
 
 # Iterating through every possible fold
 for train, test in k_fold.split(d.x, d.y):
@@ -58,19 +63,39 @@ for train, test in k_fold.split(d.x, d.y):
     model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
 
     # Fits the model
-    history.append(model.fit(X_train, Y_train,
-                             batch_size=16, epochs=300, verbose=1))
+    history = model.fit(X_train, Y_train, batch_size=16, epochs=300, verbose=1)
 
     # Evaluates the model
     score = model.evaluate(X_test, Y_test)
 
+    # Predicts with the model
+    preds = model.predict(X_test)
+
+    # Transform the predictions into categorical labels
+    preds = keras.utils.to_categorical(np.argmax(preds, axis=1), N_CLASSES)
+
+    # Calculating metrics
+    t_accuracy = accuracy_score(preds, Y_test)
+    t_precision = precision_score(preds, Y_test, average='macro')
+    t_recall = recall_score(preds, Y_test, average='macro')
+    t_f1 = f1_score(preds, Y_test, average='macro')
+
     # Appending metrics
-    loss.append(score[0])
-    accuracy.append(score[1])
+    train_loss.append(history.history['loss'])
+    test_loss.append(score[0])
+    test_accuracy.append(t_accuracy)
+    test_precision.append(t_precision)
+    test_recall.append(t_recall)
+    test_f1.append(t_f1)
 
-# Plotting last iteration results
-# p.plot_accuracy(history[-1], validation=False)
-# p.plot_loss(history[-1], validation=False)
-
-# Printing output
-print(f'Loss: {np.mean(loss)} +- {np.std(loss)} | Accuracy: {np.mean(accuracy)} +- {np.std(accuracy)}')
+# Opening file
+with open(OUTPUT_FILE, 'wb') as f:
+    # Saving output to pickle
+    pickle.dump({
+        'train_loss': train_loss,
+        'test_loss': test_loss,
+        'test_accuracy': test_accuracy,
+        'test_precision': test_precision,
+        'test_recall': test_recall,
+        'test_f1': test_f1
+    }, f)

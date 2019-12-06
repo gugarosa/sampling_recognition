@@ -11,6 +11,7 @@ with open(input_file, 'rb') as f:
     metrics = pickle.load(f)
 
 # Calculating metrics
+print(f"Training Time: {np.mean(metrics['train_time'])} +- {np.std(metrics['train_time'])}")
 print(f"Test Loss: {np.mean(metrics['test_loss'])} +- {np.std(metrics['test_loss'])}")
 print(f"Test Accuracy: {np.mean(metrics['test_accuracy'])} +- {np.std(metrics['test_accuracy'])}")
 print(f"Test Precision: {np.mean(metrics['test_precision'])} +- {np.std(metrics['test_precision'])}")

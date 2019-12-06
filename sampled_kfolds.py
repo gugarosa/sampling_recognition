@@ -1,4 +1,5 @@
 import pickle
+import time
 
 import keras
 import numpy as np
@@ -10,7 +11,7 @@ from datasets.sampled import SampledDataset
 from models.lenet import Lenet
 
 # Number of persons to load the data
-N_PERSONS = 2
+N_PERSONS = 66
 
 # Identifier of tests to be loaded
 ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -22,7 +23,7 @@ N_SAMPLES = 256
 N_CHANNELS = 6
 
 # Number of classes
-N_CLASSES = 2
+N_CLASSES = 66
 
 # Defining the output file
 OUTPUT_FILE = 'lenet_' + str(N_SAMPLES) + '.pkl'
@@ -39,15 +40,16 @@ d.x = np.reshape(d.x, (N_PERSONS*len(ID_TESTS),
 input_shape = (d.x.shape[1], d.x.shape[2], d.x.shape[3])
 
 # Creating a K-Folds cross-validation
-k_fold = StratifiedKFold(n_splits=2, shuffle=True, random_state=1)
+k_fold = StratifiedKFold(n_splits=10, shuffle=True, random_state=1)
 
-# Creating train_loss, test_loss and test_accuracy lists
+# Creating metrics lists
 train_loss = []
 test_loss = []
 test_accuracy = []
 test_precision = []
 test_recall = []
 test_f1 = []
+train_time = []
 
 # Iterating through every possible fold
 for train, test in k_fold.split(d.x, d.y):
@@ -62,8 +64,14 @@ for train, test in k_fold.split(d.x, d.y):
     # Initializes the corresponding model
     model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
 
+    # Starting the timer
+    start = time.time()
+
     # Fits the model
     history = model.fit(X_train, Y_train, batch_size=16, epochs=300, verbose=1)
+
+    # Ending the timer
+    end = time.time()
 
     # Evaluates the model
     score = model.evaluate(X_test, Y_test)
@@ -82,6 +90,7 @@ for train, test in k_fold.split(d.x, d.y):
 
     # Appending metrics
     train_loss.append(history.history['loss'])
+    train_time.append(end - start)
     test_loss.append(score[0])
     test_accuracy.append(t_accuracy)
     test_precision.append(t_precision)
@@ -93,6 +102,7 @@ with open(OUTPUT_FILE, 'wb') as f:
     # Saving output to pickle
     pickle.dump({
         'train_loss': train_loss,
+        'train_time': train_time,
         'test_loss': test_loss,
         'test_accuracy': test_accuracy,
         'test_precision': test_precision,

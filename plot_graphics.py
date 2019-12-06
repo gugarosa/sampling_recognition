@@ -19,13 +19,13 @@ std_loss = np.std(metrics['train_loss'], axis=0)
 plt.plot(mean_loss)
 
 # Fills the mean with standard deviation
-plt.fill_between(range(0, mean_loss.shape[0]), mean_loss - std_loss, mean_loss + std_loss, alpha=0.35)
+plt.fill_between(range(300), mean_loss - std_loss, mean_loss + std_loss, alpha=0.35)
 
 # Plots the legend
-plt.legend(['Mean'], loc='upper left')
+plt.legend(['$L_{64}$'], loc='upper left')
 
 # Plots the labels
-plt.title('Loss x Epochs')
+plt.title('Training convergence over all architectures')
 plt.ylabel('Loss')
 plt.xlabel('Epoch')
 

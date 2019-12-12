@@ -5,7 +5,7 @@ from keras.models import Sequential
 
 
 class Cifar10(Sequential):
-    """A simple architecture copying the default's CIFAR10.
+    """A CIFAR10 inspired architecture.
 
     """
 

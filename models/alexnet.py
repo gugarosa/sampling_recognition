@@ -7,7 +7,7 @@ from keras.models import Sequential
 
 
 class Alexnet(Sequential):
-    """A simple architecture copying the default's AlexNet.
+    """An AlexNet inspired architecture.
 
     """
 
@@ -24,51 +24,55 @@ class Alexnet(Sequential):
         # Overriding its parent class
         super(Alexnet, self).__init__()
 
+        # Defining the model itself
+        # Conv + Max Pool block
         self.add(Conv2D(96, (11, 11), input_shape=input_shape, padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(MaxPooling2D(pool_size=(2, 2)))
 
-        # Layer 2
+        # Conv + Max Pool block
         self.add(Conv2D(256, (5, 5), padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(MaxPooling2D(pool_size=(2, 2)))
 
-        # Layer 3
+        # Conv + Max Pool block
         self.add(ZeroPadding2D((1, 1)))
         self.add(Conv2D(512, (3, 3), padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(MaxPooling2D(pool_size=(2, 2)))
 
-        # Layer 4
+        # Conv + Max Pool block
         self.add(ZeroPadding2D((1, 1)))
         self.add(Conv2D(1024, (3, 3), padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
 
-        # Layer 5
+        # Conv + Max Pool block
         self.add(ZeroPadding2D((1, 1)))
         self.add(Conv2D(1024, (3, 3), padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(MaxPooling2D(pool_size=(2, 2)))
 
-        # Layer 6
+        # Flattenning the arrays
         self.add(Flatten())
+
+        # Performing the fully connections
         self.add(Dense(3072))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(Dropout(0.5))
 
-        # Layer 7
+        # Performing the fully connections
         self.add(Dense(4096))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(Dropout(0.5))
 
-        # Layer 8
+        # Performing the last fully connections
         self.add(Dense(n_classes))
         self.add(BatchNormalization())
         self.add(Activation('softmax'))

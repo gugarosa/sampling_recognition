@@ -5,7 +5,7 @@ from keras.models import Sequential
 
 
 class Lenet(Sequential):
-    """A simple architecture copying the default's LeNet.
+    """A LeNet inspired architecture.
 
     """
 

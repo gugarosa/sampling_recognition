@@ -8,22 +8,24 @@ from sklearn.metrics import (accuracy_score, f1_score, precision_score,
 from sklearn.model_selection import StratifiedKFold
 
 from datasets.sampled import SampledDataset
+from models.alexnet import Alexnet
+from models.cifar10 import Cifar10
 from models.lenet import Lenet
 
 # Number of persons to load the data
-N_PERSONS = 66
+N_PERSONS = 2
 
 # Identifier of tests to be loaded
 ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
 
 # Number of samples for further signal sampling
-N_SAMPLES = 64
+N_SAMPLES = 1024
 
 # Number of signals' channels
 N_CHANNELS = 6
 
 # Number of classes
-N_CLASSES = 66
+N_CLASSES = 2
 
 # Defining the output file
 OUTPUT_FILE = 'lenet_' + str(N_SAMPLES) + '.pkl'
@@ -62,7 +64,7 @@ for train, test in k_fold.split(d.x, d.y):
     Y_test = keras.utils.to_categorical(d.y[test], N_CLASSES)
 
     # Initializes the corresponding model
-    model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
+    model = Alexnet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
 
     # Starting the timer
     start = time.time()

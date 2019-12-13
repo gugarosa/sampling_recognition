@@ -10,6 +10,9 @@ with open(input_file, 'rb') as f:
     # Loading pickle object
     metrics = pickle.load(f)
 
+# Outputting important information
+print(f"Size: {len(metrics['train_time'])}")
+
 # Calculating metrics
 print(f"Training Time: {np.mean(metrics['train_time'])} +- {np.std(metrics['train_time'])}")
 print(f"Test Loss: {np.mean(metrics['test_loss'])} +- {np.std(metrics['test_loss'])}")

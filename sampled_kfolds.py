@@ -6,7 +6,7 @@ import keras
 import numpy as np
 from sklearn.metrics import (accuracy_score, f1_score, precision_score,
                              recall_score)
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import RepeatedStratifiedKFold
 
 from datasets.sampled import SampledDataset
 from models.alexnet import Alexnet
@@ -17,10 +17,10 @@ from models.lenet import Lenet
 N_PERSONS = 66
 
 # Identifier of tests to be loaded
-ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+ID_TESTS = [9, 10, 11, 12]
 
 # Number of samples for further signal sampling
-N_SAMPLES = 1024
+N_SAMPLES = 256
 
 # Number of signals' channels
 N_CHANNELS = 6
@@ -29,7 +29,7 @@ N_CHANNELS = 6
 N_CLASSES = 66
 
 # Defining the output file
-OUTPUT_FILE = 'lenet_' + str(N_SAMPLES) + '.pkl'
+OUTPUT_FILE = 'spiral_lenet_' + str(N_SAMPLES) + '.pkl'
 
 # Loads the HandPD dataset
 d = SampledDataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
@@ -43,7 +43,7 @@ d.x = np.reshape(d.x, (N_PERSONS*len(ID_TESTS),
 input_shape = (d.x.shape[1], d.x.shape[2], d.x.shape[3])
 
 # Creating a K-Folds cross-validation
-k_fold = StratifiedKFold(n_splits=10, shuffle=True, random_state=1)
+k_fold = RepeatedStratifiedKFold(n_splits=4, n_repeats=15, random_state=1)
 
 # Creating metrics lists
 train_loss = []
@@ -65,13 +65,13 @@ for train, test in k_fold.split(d.x, d.y):
     Y_test = keras.utils.to_categorical(d.y[test], N_CLASSES)
 
     # Initializes the corresponding model
-    model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
+    model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.001)
 
     # Starting the timer
     start = time.time()
 
     # Fits the model
-    history = model.fit(X_train, Y_train, batch_size=16, epochs=500, verbose=1)
+    history = model.fit(X_train, Y_train, batch_size=16, epochs=300, verbose=1)
 
     # Ending the timer
     end = time.time()
@@ -107,15 +107,18 @@ for train, test in k_fold.split(d.x, d.y):
     # Calling the garbage collector
     gc.collect()
 
-# Opening file
-with open(OUTPUT_FILE, 'wb') as f:
-    # Saving output to pickle
-    pickle.dump({
-        'train_loss': train_loss,
-        'train_time': train_time,
-        'test_loss': test_loss,
-        'test_accuracy': test_accuracy,
-        'test_precision': test_precision,
-        'test_recall': test_recall,
-        'test_f1': test_f1
-    }, f)
+    # Opening file
+    with open(OUTPUT_FILE, 'wb') as f:
+        # Saving output to pickle
+        pickle.dump({
+            'train_loss': train_loss,
+            'train_time': train_time,
+            'test_loss': test_loss,
+            'test_accuracy': test_accuracy,
+            'test_precision': test_precision,
+            'test_recall': test_recall,
+            'test_f1': test_f1
+        }, f)
+    
+    # Closing file
+    f.close()

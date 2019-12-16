@@ -65,7 +65,7 @@ for train, test in k_fold.split(d.x, d.y):
     Y_test = keras.utils.to_categorical(d.y[test], N_CLASSES)
 
     # Initializes the corresponding model
-    model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.001)
+    model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
 
     # Starting the timer
     start = time.time()

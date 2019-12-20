@@ -3,7 +3,7 @@ import pickle
 import numpy as np
 
 # Defining an input file
-input_file = 'lenet_256.pkl'
+input_file = 'spiral_lenet_256.pkl'
 
 # Opening input file
 with open(input_file, 'rb') as f:

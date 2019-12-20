@@ -26,33 +26,33 @@ class Alexnet(Sequential):
 
         # Defining the model itself
         # Conv + Max Pool block
-        self.add(Conv2D(96, (11, 11), input_shape=input_shape, padding='same'))
+        self.add(Conv2D(16, (3, 3), input_shape=input_shape, padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(MaxPooling2D(pool_size=(2, 2)))
 
         # Conv + Max Pool block
-        self.add(Conv2D(256, (5, 5), padding='same'))
-        self.add(BatchNormalization())
-        self.add(Activation('relu'))
-        self.add(MaxPooling2D(pool_size=(2, 2)))
-
-        # Conv + Max Pool block
-        self.add(ZeroPadding2D((1, 1)))
-        self.add(Conv2D(512, (3, 3), padding='same'))
+        self.add(Conv2D(32, (5, 5), padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(MaxPooling2D(pool_size=(2, 2)))
 
         # Conv + Max Pool block
         self.add(ZeroPadding2D((1, 1)))
-        self.add(Conv2D(1024, (3, 3), padding='same'))
+        self.add(Conv2D(64, (3, 3), padding='same'))
+        self.add(BatchNormalization())
+        self.add(Activation('relu'))
+        self.add(MaxPooling2D(pool_size=(2, 2)))
+
+        # Conv + Max Pool block
+        self.add(ZeroPadding2D((1, 1)))
+        self.add(Conv2D(64, (3, 3), padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
 
         # Conv + Max Pool block
         self.add(ZeroPadding2D((1, 1)))
-        self.add(Conv2D(1024, (3, 3), padding='same'))
+        self.add(Conv2D(32, (3, 3), padding='same'))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
         self.add(MaxPooling2D(pool_size=(2, 2)))
@@ -61,16 +61,16 @@ class Alexnet(Sequential):
         self.add(Flatten())
 
         # Performing the fully connections
-        self.add(Dense(3072))
+        self.add(Dense(256))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
-        self.add(Dropout(0.5))
+        self.add(Dropout(0.1))
 
         # Performing the fully connections
-        self.add(Dense(4096))
+        self.add(Dense(128))
         self.add(BatchNormalization())
         self.add(Activation('relu'))
-        self.add(Dropout(0.5))
+        self.add(Dropout(0.1))
 
         # Performing the last fully connections
         self.add(Dense(n_classes))

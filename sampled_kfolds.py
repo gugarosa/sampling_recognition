@@ -29,7 +29,7 @@ N_CHANNELS = 6
 N_CLASSES = 66
 
 # Defining the output file
-OUTPUT_FILE = 'spiral_lenet_' + str(N_SAMPLES) + '.pkl'
+OUTPUT_FILE = 'spiral_alexnet_' + str(N_SAMPLES) + '.pkl'
 
 # Loads the HandPD dataset
 d = SampledDataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
@@ -65,13 +65,13 @@ for train, test in k_fold.split(d.x, d.y):
     Y_test = keras.utils.to_categorical(d.y[test], N_CLASSES)
 
     # Initializes the corresponding model
-    model = Lenet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
+    model = Alexnet(input_shape=input_shape, n_classes=N_CLASSES, lr=0.0001)
 
     # Starting the timer
     start = time.time()
 
     # Fits the model
-    history = model.fit(X_train, Y_train, batch_size=16, epochs=300, verbose=1)
+    history = model.fit(X_train, Y_train, batch_size=16, epochs=10, verbose=1)
 
     # Ending the timer
     end = time.time()

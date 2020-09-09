@@ -30,7 +30,9 @@ If you use our work to fulfill any of your needs, please cite us:
 
 Install all the pre-needed requirements using:
 
-```pip install -r requirements.txt```
+```Python
+pip install -r requirements.txt
+```
 
 ---
 
@@ -60,7 +62,9 @@ After gathering the data, now it is possible to train an architecture. There are
 
 Each one of the training scripts will output a `.pkl` file, which contains valuable information about the training process. One can run the following script to calculate some metrics from that process:
 
-`python calculate_metrics.py`
+```Python
+python calculate_metrics.py
+```
 
 ### Plotting Graphics
 

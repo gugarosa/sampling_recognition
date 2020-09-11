@@ -38,7 +38,7 @@ pip install -r requirements.txt
 
 ### Downloading the Data
 
-One can [download](http://recogna.tech/files/person_handPD.tar.gz) the already pre-processed NewHandPD dataset. After downloading the file, decompress it and move it to the `data/` folder. Thus, its path should look like this: `data/handpd/`.
+One can [download](http://recogna.tech/files/sampling_recognition/data.tar.gz) the already pre-processed NewHandPD dataset. After downloading the file, decompress it and move it to the `data/` folder. Thus, its path should look like this: `data/handpd/`.
 
 Each `handpd/` folder will contain an integer identifier (person identifier) and twelve `.txt` signals, as follows:
 

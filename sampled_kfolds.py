@@ -14,10 +14,10 @@ from models.cifar10 import Cifar10
 from models.lenet import Lenet
 
 # Number of persons to load the data
-N_PERSONS = 66
+N_PERSONS = 26
 
 # Identifier of tests to be loaded
-ID_TESTS = [9, 10, 11, 12]
+ID_TESTS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
 # Number of samples for further signal sampling
 N_SAMPLES = 256
@@ -26,13 +26,13 @@ N_SAMPLES = 256
 N_CHANNELS = 6
 
 # Number of classes
-N_CLASSES = 66
+N_CLASSES = 26
 
 # Defining the output file
-OUTPUT_FILE = 'spiral_alexnet_' + str(N_SAMPLES) + '.pkl'
+OUTPUT_FILE = 'signrec_alexnet_' + str(N_SAMPLES) + '.pkl'
 
 # Loads the HandPD dataset
-d = SampledDataset(name='handpd', n_persons=N_PERSONS, id_tests=ID_TESTS,
+d = SampledDataset(name='signrec', n_persons=N_PERSONS, id_tests=ID_TESTS,
             n_samples=N_SAMPLES, n_channels=N_CHANNELS)
 
 # Re-shapes data
@@ -43,7 +43,7 @@ d.x = np.reshape(d.x, (N_PERSONS*len(ID_TESTS),
 input_shape = (d.x.shape[1], d.x.shape[2], d.x.shape[3])
 
 # Creating a K-Folds cross-validation
-k_fold = RepeatedStratifiedKFold(n_splits=4, n_repeats=15, random_state=1)
+k_fold = RepeatedStratifiedKFold(n_splits=10, n_repeats=15, random_state=1)
 
 # Creating metrics lists
 train_loss = []
@@ -71,7 +71,7 @@ for train, test in k_fold.split(d.x, d.y):
     start = time.time()
 
     # Fits the model
-    history = model.fit(X_train, Y_train, batch_size=16, epochs=10, verbose=1)
+    history = model.fit(X_train, Y_train, batch_size=16, epochs=500, verbose=1)
 
     # Ending the timer
     end = time.time()

@@ -38,7 +38,7 @@ pip install -r requirements.txt
 
 ### Downloading the Data
 
-One can [download](http://recogna.tech/files/sampling_recognition/data.tar.gz) the already pre-processed NewHandPD dataset. After downloading the file, decompress it and move it to the `data/` folder. Thus, its path should look like this: `data/handpd/`.
+One can [download](http://recogna.tech/files/sampling_recognition/data.tar.gz) the person idenfication-based NewHandPD and SignRec datasets. After downloading the file, decompress it and move it to the `data/` folder. Thus, their path should look like this: `data/handpd/` and `data/signrec/`.
 
 Each `handpd/` folder will contain an integer identifier (person identifier) and twelve `.txt` signals, as follows:
 
@@ -46,6 +46,10 @@ Each `handpd/` folder will contain an integer identifier (person identifier) and
 * (3, 4): Diakinesis;
 * (5, 6, 7, 8): Meanders;
 * (9, 10, 11, 12): Spirals.
+
+Each `signrec/` folder will contain an integer identifier (person identifier) and ten `.txt` signals, as follows:
+
+* (1, 2, 3, 4, 5, 6, 7, 8, 9, 10): Handwritten phrases;
 
 ---
 

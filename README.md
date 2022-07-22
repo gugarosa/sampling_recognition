@@ -20,8 +20,6 @@ If you use our work to fulfill any of your needs, please cite us:
   eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1111/exsy.12891},
   year = {2022}
 }
-
-
 ```
 
 ## Structure

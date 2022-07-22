@@ -6,7 +6,22 @@
 
 If you use our work to fulfill any of your needs, please cite us:
 
-```
+```BibTex
+@article{deRosa:22,
+  author = {de Rosa, Gustavo H. and Roder, Mateus and Papa, João P.},
+  title = {Neighbour-based bag-of-samplings for person identification through handwritten dynamics and convolutional neural networks},
+  journal = {Expert Systems},
+  volume = {39},
+  number = {4},
+  pages = {e12891},
+  keywords = {bag-of-samplings, biometrics, convolutional neural networks, handwritten dynamics, person identification},
+  doi = {https://doi.org/10.1111/exsy.12891},
+  url = {https://onlinelibrary.wiley.com/doi/abs/10.1111/exsy.12891},
+  eprint = {https://onlinelibrary.wiley.com/doi/pdf/10.1111/exsy.12891},
+  year = {2022}
+}
+
+
 ```
 
 ## Structure
